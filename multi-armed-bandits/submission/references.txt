@@ -1,0 +1,4 @@
+https://en.wikipedia.org/wiki/Multi-armed_bandit
+https://web.stanford.edu/~bvr/pubs/TS_Tutorial.pdf
+https://lilianweng.github.io/lil-log/2018/01/23/the-multi-armed-bandit-problem-and-its-solutions.html
+https://www.stat.berkeley.edu/~bartlett/courses/2014fall-cs294stat260/lectures/bandit-kl-ucb-notes.pdf
