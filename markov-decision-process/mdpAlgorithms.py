@@ -27,7 +27,6 @@ def PolicyIteration(numStates, numActions, rewards, transition, discount, mdpTyp
         P[i][0] = np.random.choice(range(numActions))
     while True:
         delta = 0
-        error = 0
         old_V = np.copy(V)
         old_P = np.copy(P)
         # policy evaluation
