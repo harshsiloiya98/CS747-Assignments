@@ -24,7 +24,7 @@ def PolicyIteration(numStates, numActions, rewards, transition, discount, mdpTyp
     epsilon = 1e-10
     # random initialization of policy
     for i in range(numStates):
-        P[i] = np.random.choice(range(numActions))
+        P[i][0] = np.random.choice(range(numActions))
     while True:
         delta = 0
         error = 0
@@ -36,10 +36,10 @@ def PolicyIteration(numStates, numActions, rewards, transition, discount, mdpTyp
                 V[state][0] = 0
             else:
                 p = P[state][0]
-                t_curr = np.reshape(transition[state][p], (numStates, 1))
-                r_curr = np.reshape(rewards[state][p], (numStates, 1))
-                r_curr = r_curr + discount * V
-                result = np.matmul(np.transpose(t_curr), r_curr)
+                t = np.reshape(transition[state][p], (numStates, 1))
+                r = np.reshape(rewards[state][p], (numStates, 1))
+                r = r + discount * V
+                result = np.matmul(np.transpose(t), r)
                 V[state][0] = result[0][0]
             delta = max(delta, abs(V[state][0] - old_V[state][0]))
         if (delta < epsilon):
@@ -47,10 +47,10 @@ def PolicyIteration(numStates, numActions, rewards, transition, discount, mdpTyp
             isPolicyStable = True
             for state in range(numStates):
                 for action in range(numActions):
-                    t_curr = np.reshape(transition[state][action], (numStates, 1))
-                    r_curr = np.reshape(rewards[state][action], (numStates, 1))
-                    r_curr = r_curr + discount * V
-                    result = np.matmul(np.transpose(t_curr), r_curr)
+                    t = np.reshape(transition[state][action], (numStates, 1))
+                    r = np.reshape(rewards[state][action], (numStates, 1))
+                    r = r + discount * V
+                    result = np.matmul(np.transpose(t), r)
                     tmp[action] = result[0][0]
                 P[state][0] = np.argmax(tmp)
                 if (P[state][0] != old_P[state][0]):
