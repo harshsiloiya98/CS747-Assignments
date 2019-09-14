@@ -3,4 +3,4 @@ This assignment uses two types of algorithms for finding the optimum value and p
 * Linear Programming
 * Policy Iteration
 
-For solving linear programming problems, the Python library (PuLP)[https://pythonhosted.org/PuLP/] is used.
+For solving linear programming problems, the Python library [PuLP](https://pythonhosted.org/PuLP/) is used.
