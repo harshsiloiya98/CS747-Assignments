@@ -1,4 +1,4 @@
-import pulp
+from pulp import LpMinimize, LpProblem, lpSum, LpVariable
 import numpy as np
 
 # called from init.py, runs an algorithm according to the 'algorithm' parameter provided
@@ -13,17 +13,18 @@ def run_algorithm(numStates, numActions, rewards, transition, discount, mdpType,
 
 # finds optimal value function using linear programming
 def LinearProgramming(numStates, numActions, rewards, transition, discount, mdpType):
-    mdpProblem = pulp.LpProblem("MDP", pulp.LpMinimize)
-    dictVar = pulp.LpVariable.dict("value_function", range(numStates))
+    mdpProblem = LpProblem("MDP", LpMinimize)
+    dictVar = LpVariable.dict("value_function", range(numStates))
     # adding objective function
-    mdpProblem += pulp.lpSum([dictVar[i] for i in range(numStates)])
+    mdpProblem += lpSum([dictVar[i] for i in range(numStates)])
     # adding constraints
-    for state1 in range(numStates):
+    V = np.zeros((numStates, 1), dtype = LpVariable)
+    for i in range(numStates):
+        V[i][0] = dictVar[i]
+    for state in range(numStates):
         for action in range(numActions):
-            lowerBound = 0
-            for state2 in range(numStates):
-                lowerBound += transition[state1][action][state2] * (rewards[state1][action][state2] + discount * dictVar[state2])
-            mdpProblem += dictVar[state1] >= lowerBound
+            lowerBound = Bellman(transition[state][action], rewards[state][action], V, discount)
+            mdpProblem += dictVar[state] >= lowerBound
     # additional constraint for episodic MDPs
     if (mdpType == "episodic"):
         mdpProblem += (dictVar[numStates - 1] == 0)
@@ -37,11 +38,7 @@ def LinearProgramming(numStates, numActions, rewards, transition, discount, mdpT
     tmp = np.zeros((numActions, ))
     for state in range(numStates):
         for action in range(numActions):
-            t = np.reshape(transition[state][action], (numStates, 1))
-            r = np.reshape(rewards[state][action], (numStates, 1))
-            r = r + discount * V
-            result = np.matmul(np.transpose(t), r)
-            tmp[action] = result[0][0]
+            tmp[action] = Bellman(transition[state][action], rewards[state][action], V, discount)
         P[state][0] = np.argmax(tmp)
     return P, V
 
@@ -64,22 +61,14 @@ def PolicyIteration(numStates, numActions, rewards, transition, discount, mdpTyp
                 V[state][0] = 0
             else:
                 p = P[state][0]
-                t = np.reshape(transition[state][p], (numStates, 1))
-                r = np.reshape(rewards[state][p], (numStates, 1))
-                r = r + discount * V
-                result = np.matmul(np.transpose(t), r)
-                V[state][0] = result[0][0]
+                V[state][0] = Bellman(transition[state][p], rewards[state][p], V, discount)
             delta = max(delta, abs(V[state][0] - old_V[state][0]))
         if (delta < epsilon):
             # policy improvement
             isPolicyStable = True
             for state in range(numStates):
                 for action in range(numActions):
-                    t = np.reshape(transition[state][action], (numStates, 1))
-                    r = np.reshape(rewards[state][action], (numStates, 1))
-                    r = r + discount * V
-                    result = np.matmul(np.transpose(t), r)
-                    tmp[action] = result[0][0]
+                    tmp[action] = Bellman(transition[state][action], rewards[state][action], V, discount)
                 P[state][0] = np.argmax(tmp)
                 if (P[state][0] != old_P[state][0]):
                     isPolicyStable = False
@@ -87,3 +76,11 @@ def PolicyIteration(numStates, numActions, rewards, transition, discount, mdpTyp
             if (isPolicyStable):
                 break
     return P, V
+
+def Bellman(T, R, V, gamma):
+    numStates = np.size(T)
+    T = np.reshape(T, (numStates, 1))
+    R = np.reshape(R, (numStates, 1))
+    R = R + gamma * V
+    result = np.matmul(np.transpose(T), R)
+    return result[0][0]
