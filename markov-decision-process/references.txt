@@ -1,2 +1,3 @@
 Reinforcement Learning: An Introduction, Richard S. Sutton and Andrew G. Barto, 2nd edition 2018
 https://people.eecs.berkeley.edu/~pabbeel/cs287-fa12/slides/mdps-exact-methods.pdf
+https://scaron.info/blog/linear-programming-in-python-with-pulp.html
