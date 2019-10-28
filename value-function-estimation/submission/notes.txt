@@ -1,0 +1,27 @@
+The algorithm used to estimate the value function is TD(0). This was chosen after testing both TD(0) and TD(λ) algorithms with multiple values of λ and α.
+It was observed that TD(0) gave lesser squared error value than TD(λ) for small differences in α values for the testcases.
+TD(λ) would have worked if we needed the most accurate approximation to V(s) of a single MDP instead of different MDPs.
+
+For λ, α ∊ [0, 1] rounded off to 2 decimal places,
+
+For d1.txt :-
+Minimum error (TD(0)) =  0.7889042839056915
+Optimal α =  0.02
+Minimum error (TD(λ)) =  0.0031032247008890078
+Optimal α =  0.03
+Optimal λ =  0.98
+
+For d2.txt :-
+Minimum error (TD(0)) =  0.005434670990176132
+Optimal α =  0.01
+Minimum error (TD(λ)) =  0.005434670990176132
+Optimal α =  0.01
+Optimal λ =  0
+
+Inferring from the tests, we can see that TD(λ) gives the most accurate approximation of V(s) but TD(0) gives a good enough approximation for the testcases
+with small variance in α values (as compared to large difference in the optimal λ values for d1.txt and d2.txt).
+
+The TD(0) algorithm used in estimator.py uses a constant α value, which is kept as the mean of the optimal α values from the testcases. This value of α
+seemed to give a good approximation of V(s).
+
+Also, Monte-Carlo method was not used in this case due to the MDP being a continuing one.
