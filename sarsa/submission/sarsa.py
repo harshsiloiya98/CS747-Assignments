@@ -24,7 +24,7 @@ def SARSA(seedval, transitions, numStates, numActions, discount, start, end, num
         while (step <= maxSteps):
             nextState = transitions[state][action][0]
             if (not (type(nextState) is int or type(nextState) is np.int64)):
-                probs = np.ones(len(nextState)) / len(nextState)
+                probs = np.ones(len(nextState)) *  1.0 / len(nextState)
                 nextState = np.random.choice(nextState, p = probs)
             nextAction = selectAction(Q, epsilon, nextState, numActions)
             reward = transitions[state][action][1]

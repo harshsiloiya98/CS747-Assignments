@@ -197,15 +197,15 @@ class WindyGridworldS:
                     newPos = curPos + np.array([0, -1]) + self.__windStrength[curPos] * np.array([1, 0])
                 elif (action == 7):
                     newPos = curPos + np.array([1, -1]) + self.__windStrength[curPos] * np.array([1, 0])
-                newPos1 = newPos + np.array([1, 0])
-                newPos2 = newPos + np.array([2, 0])
                 newPos = self.__confineWithinGrid(newPos)
-                newPos1 = self.__confineWithinGrid(newPos1)
-                newPos2 = self.__confineWithinGrid(newPos2)
                 nextState = np.ravel_multi_index(newPos.astype(int), (self.__r, self.__c))
-                nextState1 = np.ravel_multi_index(newPos1.astype(int), (self.__r, self.__c))
-                nextState2 = np.ravel_multi_index(newPos2.astype(int), (self.__r, self.__c))
                 if (self.__windStrength[curPos] > 0):
+                    newPos1 = newPos + np.array([1, 0])
+                    newPos2 = newPos + np.array([2, 0])
+                    newPos1 = self.__confineWithinGrid(newPos1)
+                    newPos2 = self.__confineWithinGrid(newPos2)
+                    nextState1 = np.ravel_multi_index(newPos1.astype(int), (self.__r, self.__c))
+                    nextState2 = np.ravel_multi_index(newPos2.astype(int), (self.__r, self.__c))
                     self.__transitions[state][action][0] = np.array([int(nextState), int(nextState1), int(nextState2)])
                 else:
                     self.__transitions[state][action][0] = int(nextState)

@@ -20,6 +20,9 @@ if __name__ == "__main__":
     elif (arg == "stochastic"):
         wG = WindyGridworldS()
         graphTitle = "SARSA for Windy Gridworld with Stochasticity"
+    else:
+        print("Incorrect argument")
+        exit()
     numStates = wG.getNumStates()
     numActions = wG.getNumActions()
     discount = wG.getDiscount()
