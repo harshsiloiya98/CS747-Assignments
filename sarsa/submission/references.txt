@@ -1,0 +1,2 @@
+Reinforcement Learning: An Introduction, Sutton/Barto
+https://stackoverflow.com/questions/2225038/determine-the-type-of-an-object
