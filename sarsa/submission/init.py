@@ -2,7 +2,7 @@ import sys
 import numpy as np
 from os.path import exists
 import matplotlib.pyplot as plt
-from windygridworld import WindyGridworld
+from windygridworld import WindyGridworld, WindyGridworldK, WindyGridworldS
 from sarsa import SARSA
 
 if __name__ == "__main__":
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     start = wG.getStartState()
     end = wG.getEndState()
     x, y = SARSA(transitions, numStates, numActions, discount, start, end)
-    plt.plot(x, y)
+    plt.plot(y, x)
     plt.xlabel("Time Steps")
     plt.ylabel("Episodes")
     plt.title(graphTitle)

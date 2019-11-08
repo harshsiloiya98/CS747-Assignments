@@ -109,19 +109,19 @@ class WindyGridworldK:
                 if (action == 0):
                     newPos = curPos + np.array([1, 0]) + self.__windStrength[curPos] * np.array([1, 0])
                 elif (action == 1):
-                    newPos = curPos + np.array([0, 1]) + self.__windStrength[curPos] * np.array([1, 0])
+                    newPos = curPos + np.array([1, 1]) + self.__windStrength[curPos] * np.array([1, 0])
                 elif (action == 2):
-                    newPos = curPos + np.array([-1, 0]) + self.__windStrength[curPos] * np.array([1, 0])
-                elif (action == 3):
-                    newPos = curPos + np.array([0, -1]) + self.__windStrength[curPos] * np.array([1, 0])
-                elif (action == 4):
-                    newPos = curPos + np.array([1, 0]) + self.__windStrength[curPos] * np.array([1, 0])
-                elif (action == 5):
                     newPos = curPos + np.array([0, 1]) + self.__windStrength[curPos] * np.array([1, 0])
-                elif (action == 6):
+                elif (action == 3):
+                    newPos = curPos + np.array([-1, 1]) + self.__windStrength[curPos] * np.array([1, 0])
+                elif (action == 4):
                     newPos = curPos + np.array([-1, 0]) + self.__windStrength[curPos] * np.array([1, 0])
-                elif (action == 7):
+                elif (action == 5):
+                    newPos = curPos + np.array([-1, -1]) + self.__windStrength[curPos] * np.array([1, 0])
+                elif (action == 6):
                     newPos = curPos + np.array([0, -1]) + self.__windStrength[curPos] * np.array([1, 0])
+                elif (action == 7):
+                    newPos = curPos + np.array([1, -1]) + self.__windStrength[curPos] * np.array([1, 0])
                 newPos = self.__confineWithinGrid(newPos)
                 nextState = np.ravel_multi_index(newPos.astype(int), (self.__r, self.__c))
                 self.__transitions[state][action][0] = int(nextState)
@@ -140,7 +140,7 @@ class WindyGridworldS:
         super().__init__(*args, **kwargs)
         self.__r = 7
         self.__c = 10
-        self.__numActions = 4
+        self.__numActions = 8
         self.__numStates = self.__r * self.__c
         self.__discount = 1
         self.__windStrength = np.zeros((self.__r, self.__c))
@@ -173,18 +173,26 @@ class WindyGridworldS:
         for state in range(self.__numStates):
             curPos = np.unravel_index(state, (self.__r, self.__c))
             for action in range(self.__numActions):
-                # UP    - 0
-                # RIGHT - 1
-                # DOWN  - 2
-                # LEFT  - 3
+                # N - 0     S - 4
+                # NE - 1    SW - 5
+                # E - 2     W - 6
+                # SE - 3    Nw - 7
                 if (action == 0):
                     newPos = curPos + np.array([1, 0]) + self.__windStrength[curPos] * np.array([1, 0])
                 elif (action == 1):
-                    newPos = curPos + np.array([0, 1]) + self.__windStrength[curPos] * np.array([1, 0])
+                    newPos = curPos + np.array([1, 1]) + self.__windStrength[curPos] * np.array([1, 0])
                 elif (action == 2):
-                    newPos = curPos + np.array([-1, 0]) + self.__windStrength[curPos] * np.array([1, 0])
+                    newPos = curPos + np.array([0, 1]) + self.__windStrength[curPos] * np.array([1, 0])
                 elif (action == 3):
+                    newPos = curPos + np.array([-1, 1]) + self.__windStrength[curPos] * np.array([1, 0])
+                elif (action == 4):
+                    newPos = curPos + np.array([-1, 0]) + self.__windStrength[curPos] * np.array([1, 0])
+                elif (action == 5):
+                    newPos = curPos + np.array([-1, -1]) + self.__windStrength[curPos] * np.array([1, 0])
+                elif (action == 6):
                     newPos = curPos + np.array([0, -1]) + self.__windStrength[curPos] * np.array([1, 0])
+                elif (action == 7):
+                    newPos = curPos + np.array([1, -1]) + self.__windStrength[curPos] * np.array([1, 0])
                 newPos = self.__confineWithinGrid(newPos)
                 nextState = np.ravel_multi_index(newPos.astype(int), (self.__r, self.__c))
                 self.__transitions[state][action][0] = int(nextState)
