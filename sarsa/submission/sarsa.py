@@ -28,13 +28,14 @@ def SARSA(seedval, transitions, numStates, numActions, discount, start, end, num
                 nextState = np.random.choice(nextState, p = probs)
             nextAction = selectAction(Q, epsilon, nextState, numActions)
             reward = transitions[state][action][1]
-            Q[state][action] += alpha * (reward + discount * Q[nextState][nextAction] - Q[state][action])
             if (nextState == end):
+                Q[state][action] += alpha * (reward - Q[state][action])
                 if (episode > 0):
                     y[episode] = step + y[episode - 1]
                 else:
                     y[episode] = step
                 break
+            Q[state][action] += alpha * (reward + discount * Q[nextState][nextAction] - Q[state][action])
             state = nextState
             action = nextAction
             step += 1
